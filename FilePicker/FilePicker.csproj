@@ -60,9 +60,16 @@
     <Reference Include="System.Numerics.Vectors" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="InterfaceImplementations.cs" />
     <Compile Include="MainActivity.cs" />
+    <Compile Include="PermissionUtils.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SerialBinder.cs" />
+    <Compile Include="ServiceConstants.cs" />
+    <Compile Include="ServiceUtilityClasses.cs" />
+    <Compile Include="UsbConnection.cs" />
+    <Compile Include="UsbService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
