@@ -69,12 +69,70 @@
     <Compile Include="ServiceConstants.cs" />
     <Compile Include="ServiceUtilityClasses.cs" />
     <Compile Include="UsbConnection.cs" />
+    <Compile Include="USBSerialLibrary\deviceids\CH34xIds.cs" />
+    <Compile Include="USBSerialLibrary\deviceids\CP210xIds.cs" />
+    <Compile Include="USBSerialLibrary\deviceids\CP2130Ids.cs" />
+    <Compile Include="USBSerialLibrary\deviceids\FTDISioIds.cs" />
+    <Compile Include="USBSerialLibrary\deviceids\Helpers.cs" />
+    <Compile Include="USBSerialLibrary\deviceids\PL2303Ids.cs" />
+    <Compile Include="USBSerialLibrary\deviceids\XdcVcpIds.cs" />
+    <Compile Include="USBSerialLibrary\GlobalSuppressions.cs" />
+    <Compile Include="USBSerialLibrary\obj\Debug\90\MonoAndroid,Version=v9.0.AssemblyAttributes.cs" />
+    <Compile Include="USBSerialLibrary\obj\Release\90\MonoAndroid,Version=v9.0.AssemblyAttributes.cs" />
+    <Compile Include="USBSerialLibrary\Properties\AssemblyInfo.cs" />
+    <Compile Include="USBSerialLibrary\Resources\Resource.Designer.cs" />
+    <Compile Include="USBSerialLibrary\usbserial\common\SerialBuffer.cs" />
+    <Compile Include="USBSerialLibrary\usbserial\common\SerialInputStream.cs" />
+    <Compile Include="USBSerialLibrary\usbserial\common\SerialOutputStream.cs" />
+    <Compile Include="USBSerialLibrary\usbserial\common\UsbSerialDebugger.cs" />
+    <Compile Include="USBSerialLibrary\usbserial\serialdevice\AbstractWorkerThread.cs" />
+    <Compile Include="USBSerialLibrary\usbserial\serialdevice\CDCSerialDevice.cs" />
+    <Compile Include="USBSerialLibrary\usbserial\serialdevice\CH34xSerialDevice.cs" />
+    <Compile Include="USBSerialLibrary\usbserial\serialdevice\CP2102SerialDevice.cs" />
+    <Compile Include="USBSerialLibrary\usbserial\serialdevice\FTDISerialDevice.cs" />
+    <Compile Include="USBSerialLibrary\usbserial\serialdevice\PL2303SerialDevice.cs" />
+    <Compile Include="USBSerialLibrary\usbserial\serialdevice\SerialPortBuilder.cs" />
+    <Compile Include="USBSerialLibrary\usbserial\serialdevice\SerialPortCallback.cs" />
+    <Compile Include="USBSerialLibrary\usbserial\serialdevice\UsbSerialDevice.cs" />
+    <Compile Include="USBSerialLibrary\usbserial\serialdevice\UsbSerialInterface.cs" />
+    <Compile Include="USBSerialLibrary\usbserial\spidevice\CP2130SpiDevice.cs" />
+    <Compile Include="USBSerialLibrary\usbserial\spidevice\UsbSpiDevice.cs" />
+    <Compile Include="USBSerialLibrary\usbserial\spidevice\UsbSpiInterface.cs" />
+    <Compile Include="USBSerialLibrary\utils\EventHandlerExtensions.cs" />
+    <Compile Include="USBSerialLibrary\utils\HexData.cs" />
+    <Compile Include="USBSerialLibrary\utils\MonitorExtensions.cs" />
+    <Compile Include="USBSerialLibrary\utils\ReadWritelockExtension.cs" />
+    <Compile Include="USBSerialLibrary\utils\SafeUsbRequest.cs" />
+    <Compile Include="USBSerialLibrary\utils\SerialDataReceivedArgs.cs" />
+    <Compile Include="USBSerialLibrary\utils\UsbSupport.cs" />
     <Compile Include="UsbService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
     <None Include="Properties\AndroidManifest.xml" />
     <None Include="Assets\AboutAssets.txt" />
+    <None Include="USBSerialLibrary\LICENSE" />
+    <None Include="USBSerialLibrary\obj\Debug\90\aapt2.version" />
+    <None Include="USBSerialLibrary\obj\Debug\90\designtime\build.props" />
+    <None Include="USBSerialLibrary\obj\Debug\90\designtime\libraryimports.cache" />
+    <None Include="USBSerialLibrary\obj\Debug\90\designtime\libraryprojectimports.cache" />
+    <None Include="USBSerialLibrary\obj\Debug\90\designtime\resourcepaths.cache" />
+    <None Include="USBSerialLibrary\obj\Debug\90\R.cs.flag" />
+    <None Include="USBSerialLibrary\obj\Debug\90\res.flag" />
+    <None Include="USBSerialLibrary\obj\Debug\90\stamp\_BuildLibraryImportsCache.stamp" />
+    <None Include="USBSerialLibrary\obj\Debug\90\stamp\_ResolveLibraryProjectImports.stamp" />
+    <None Include="USBSerialLibrary\obj\Debug\90\USBSerialLibrary.csprojAssemblyReference.cache" />
+    <None Include="USBSerialLibrary\obj\Release\90\aapt2.version" />
+    <None Include="USBSerialLibrary\obj\Release\90\designtime\build.props" />
+    <None Include="USBSerialLibrary\obj\Release\90\designtime\libraryimports.cache" />
+    <None Include="USBSerialLibrary\obj\Release\90\designtime\libraryprojectimports.cache" />
+    <None Include="USBSerialLibrary\obj\Release\90\designtime\resourcepaths.cache" />
+    <None Include="USBSerialLibrary\obj\Release\90\R.cs.flag" />
+    <None Include="USBSerialLibrary\obj\Release\90\res.flag" />
+    <None Include="USBSerialLibrary\obj\Release\90\stamp\_BuildLibraryImportsCache.stamp" />
+    <None Include="USBSerialLibrary\obj\Release\90\stamp\_ResolveLibraryProjectImports.stamp" />
+    <None Include="USBSerialLibrary\USBSerialLibrary.csproj" />
+    <None Include="USBSerialLibrary\USBSerialLibrary.csproj.vspscc" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\activity_main.xml">
@@ -104,6 +162,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\drawable\" />
+    <Folder Include="USBSerialLibrary\bin\Debug\" />
+    <Folder Include="USBSerialLibrary\bin\Release\" />
+    <Folder Include="USBSerialLibrary\obj\Debug\90\lp\" />
+    <Folder Include="USBSerialLibrary\obj\Debug\90\res\" />
+    <Folder Include="USBSerialLibrary\obj\Release\90\lp\" />
+    <Folder Include="USBSerialLibrary\obj\Release\90\res\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers">
@@ -121,6 +185,10 @@
     <PackageReference Include="Xamarin.Plugin.FilePicker">
       <Version>2.1.34</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="USBSerialLibrary\obj\Debug\90\R.txt" />
+    <Content Include="USBSerialLibrary\obj\Release\90\R.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
