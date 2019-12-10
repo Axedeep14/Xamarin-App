@@ -120,133 +120,66 @@ namespace FilePicker
         string _filePath="";
         TextView filepath;
         Button button;
-        protected override void OnCreate(Bundle savedInstanceState)
+
+        /// <summary>
+        /// The SetFilters
+        /// </summary>
+        private void SetFilters()
         {
-            base.OnCreate(savedInstanceState);
-            SetContentView(Resource.Layout.activity_main);
-            Xamarin.Essentials.Platform.Init(this, savedInstanceState);
-            filepath = FindViewById<TextView>(Resource.Id.filePath);
-            // Set our view from the "main" layout resource
-
-            button = FindViewById<Button>(Resource.Id.filebtn);
-
-            button.Click += (e , o) => {
-                OnFileSelect();
-            };
-            
-        }
-        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
-        {
-            Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
-
-            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+            IntentFilter filter = new IntentFilter();
+            filter.AddAction(ServiceConstants.ACTION_USB_PERMISSION_GRANTED);
+            filter.AddAction(ServiceConstants.ACTION_NO_USB);
+            filter.AddAction(ServiceConstants.ACTION_USB_DISCONNECTED);
+            filter.AddAction(ServiceConstants.ACTION_USB_NOT_SUPPORTED);
+            filter.AddAction(ServiceConstants.ACTION_USB_PERMISSION_NOT_GRANTED);
+            RegisterReceiver(detachedReceiver, filter);
         }
 
-        protected async void OnFileSelect()
+
+        /// <summary>
+        /// The StartService
+        /// </summary>
+        /// <param name="serviceConnection">The serviceConnection<see cref="IServiceConnection"/></param>
+        /// <param name="extras">The extras<see cref="Bundle"/></param>
+        private void StartUSBService(IServiceConnection serviceConnection, Bundle extras)
         {
-            try
+            if (!LGUsbService.SERVICE_CONNECTED)
             {
-                    var crossFilePicker = Plugin.FilePicker.CrossFilePicker.Current;
-
-                    var myResult = await crossFilePicker.PickFile();
-                    System.Console.WriteLine("deepak 1                   " + myResult);
-                    _filePath = myResult.FilePath;
-                    System.Console.WriteLine("deepak 1                   " + _filePath);
-                    if (!string.IsNullOrEmpty(myResult.FileName))//Just the file name, it doesn't has the path
+                Intent startService = new Intent(this, typeof(LGUsbService));
+                if (extras?.IsEmpty == false)
+                {
+                    List<string> keys = (List<string>)extras.KeySet();
+                    foreach (string key in keys)
                     {
-                        _filePath = myResult.FilePath;
-                        if (File.Exists(_filePath))
-                        {
-                            filepath.Text = File.ReadAllText(_filePath); ;
-                        }
+                        string extra = extras.GetString(key);
+                        startService.PutExtra(key, extra);
                     }
-                else
-                {
-                    System.Console.WriteLine("deepak                   " + _filePath);
-                    AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-                    AlertDialog alert = dialog.Create();
-                    alert.SetTitle("Title");
-                    alert.SetMessage("Simple Alert");
-                    alert.SetButton("OK", (c, ev) =>
-                    {
-                        Intent refresh = new Intent(this, typeof(MainActivity));
-                        refresh.AddFlags(ActivityFlags.NoAnimation);
-                        Finish();
-                        StartActivity(refresh);
-                    });
-                    alert.Show();
                 }
+                StartService(startService);
             }
-            catch (Exception e)
+            Intent bindingIntent = new Intent(this, typeof(LGUsbService));
+            BindService(bindingIntent, serviceConnection, Bind.AutoCreate);
+        }
+
+
+        private void StopUSBService()
+        {
+            if (usbService != null)
             {
-                System.Console.WriteLine("deepak       " + e);
+                usbService.StopService();
+                UnbindService(usbConnection);
+                UnregisterReceiver(detachedReceiver);
+                usbService = null;
             }
-
-
-            ////SIR KA CODE STARTING FROM HERE
-            ///
+        }
 
 
 
-            /// <summary>
-            /// The SetFilters
-            /// </summary>
-            private void SetFilters()
-            {
-                IntentFilter filter = new IntentFilter();
-                filter.AddAction(ServiceConstants.ACTION_USB_PERMISSION_GRANTED);
-                filter.AddAction(ServiceConstants.ACTION_NO_USB);
-                filter.AddAction(ServiceConstants.ACTION_USB_DISCONNECTED);
-                filter.AddAction(ServiceConstants.ACTION_USB_NOT_SUPPORTED);
-                filter.AddAction(ServiceConstants.ACTION_USB_PERMISSION_NOT_GRANTED);
-                RegisterReceiver(detachedReceiver, filter);
-            }
-
-
-            /// <summary>
-            /// The StartService
-            /// </summary>
-            /// <param name="serviceConnection">The serviceConnection<see cref="IServiceConnection"/></param>
-            /// <param name="extras">The extras<see cref="Bundle"/></param>
-            private void StartUSBService(IServiceConnection serviceConnection, Bundle extras)
-            {
-                if (!LGUsbService.SERVICE_CONNECTED)
-                {
-                    Intent startService = new Intent(this, typeof(LGUsbService));
-                    if (extras?.IsEmpty == false)
-                    {
-                        List<string> keys = (List<string>)extras.KeySet();
-                        foreach (string key in keys)
-                        {
-                            string extra = extras.GetString(key);
-                            startService.PutExtra(key, extra);
-                        }
-                    }
-                    StartService(startService);
-                }
-                Intent bindingIntent = new Intent(this, typeof(LGUsbService));
-                BindService(bindingIntent, serviceConnection, Bind.AutoCreate);
-            }
-
-
-            private void StopUSBService()
-            {
-                if (usbService != null)
-                {
-                    usbService.StopService();
-                    UnbindService(usbConnection);
-                    UnregisterReceiver(detachedReceiver);
-                    usbService = null;
-                }
-            }
-
-
-
-            /// <summary>
-            /// Defines the <see cref="MyHandler" />
-            /// </summary>
-            private class MyHandler : Handler
-            {
+        /// <summary>
+        /// Defines the <see cref="MyHandler" />
+        /// </summary>
+        private class MyHandler : Handler
+        {
             private MainActivity mActivity;
             private WeakReference<MainActivity> ref_mActivity;
 
@@ -345,6 +278,16 @@ namespace FilePicker
         {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.activity_main);
+            Xamarin.Essentials.Platform.Init(this, savedInstanceState);
+            filepath = FindViewById<TextView>(Resource.Id.filePath);
+            // Set our view from the "main" layout resource
+
+            button = FindViewById<Button>(Resource.Id.filebtn);
+
+            button.Click += (e , o) => {
+                OnFileSelect();
+            };
+
             Window.AddFlags(WindowManagerFlags.KeepScreenOn);
 
             mHandler = new MyHandler(this);
@@ -356,9 +299,57 @@ namespace FilePicker
 
             PowerManager powerManager = GetSystemService(PowerService) as PowerManager;
             wakeLock = powerManager.NewWakeLock(WakeLockFlags.ScreenDim, TAG);
-
-
         }
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
+        {
+            Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+
+            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+
+        protected async void OnFileSelect()
+        {
+            try
+            {
+                var crossFilePicker = Plugin.FilePicker.CrossFilePicker.Current;
+
+                var myResult = await crossFilePicker.PickFile();
+                System.Console.WriteLine("deepak 1                   " + myResult);
+                _filePath = myResult.FilePath;
+                System.Console.WriteLine("deepak 1                   " + _filePath);
+                if (!string.IsNullOrEmpty(myResult.FileName))//Just the file name, it doesn't has the path
+                {
+                    _filePath = myResult.FilePath;
+                    if (File.Exists(_filePath))
+                    {
+                        filepath.Text = File.ReadAllText(_filePath); ;
+                    }
+                }
+                else
+                {
+                    System.Console.WriteLine("deepak                   " + _filePath);
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+                    AlertDialog alert = dialog.Create();
+                    alert.SetTitle("Title");
+                    alert.SetMessage("Simple Alert");
+                    alert.SetButton("OK", (c, ev) =>
+                    {
+                        Intent refresh = new Intent(this, typeof(MainActivity));
+                        refresh.AddFlags(ActivityFlags.NoAnimation);
+                        Finish();
+                        StartActivity(refresh);
+                    });
+                    alert.Show();
+                }
+            }
+            catch (Exception e)
+            {
+                System.Console.WriteLine("deepak       " + e);
+            }
+        }
+
+            ////SIR KA CODE STARTING FROM HERE
+            ///
 
         /// <summary>
         /// The OnDestroy
